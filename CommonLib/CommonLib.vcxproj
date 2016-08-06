@@ -91,6 +91,10 @@
   <ItemGroup>
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\OpenGL01\OpenGL01\shader.frag" />
+    <None Include="..\OpenGL01\OpenGL01\shader.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

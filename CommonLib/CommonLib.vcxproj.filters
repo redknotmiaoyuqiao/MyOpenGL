@@ -33,4 +33,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\OpenGL01\OpenGL01\shader.vert">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="..\OpenGL01\OpenGL01\shader.frag">
+      <Filter>头文件</Filter>
+    </None>
+  </ItemGroup>
 </Project>
