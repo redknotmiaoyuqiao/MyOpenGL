@@ -1,11 +1,8 @@
 #version 330
 
+in vec4 OutColor;
 out vec4 FragColor;
 
-uniform float gScale;
-
-in vec3 color;
-
 void main(){
-	FragColor = vec4(color.x,color.y,color.z,1.0);
+	FragColor = OutColor;
 }

@@ -1,12 +1,15 @@
 #version 330
 
 layout(location=0) in vec3 Position;
+layout(location=1) in vec3 Color;
 
-uniform float gScale;
+//uniform float gScale;
 
-out vec3 color;
+uniform mat4 gWorld;
+
+out vec4 OutColor;
 
 void main(){
-	gl_Position = vec4(Position.x * gScale ,Position.y * gScale,Position.z,1.0);
-	color = vec3(Position.x,Position.y,Position.z);
+	gl_Position = gWorld * vec4(Position * 0.3,1.0);
+	OutColor = vec4(Color,1.0);
 }

@@ -1,3 +1,9 @@
-﻿  main.cpp
+﻿  Pipeline.cpp
+  正在生成代码...
+  正在编译...
+  main.cpp
+d:\myopengl\opengl01\opengl01\main.cpp(92): warning C4305: “+=”: 从“double”到“float”截断
+d:\myopengl\opengl01\opengl01\main.cpp(95): warning C4305: “-=”: 从“double”到“float”截断
+  正在生成代码...
   OpenGL01.vcxproj -> D:\MyOpenGL\OpenGL01\Debug\OpenGL01.exe
   OpenGL01.vcxproj -> D:\MyOpenGL\OpenGL01\Debug\OpenGL01.pdb (Full PDB)
