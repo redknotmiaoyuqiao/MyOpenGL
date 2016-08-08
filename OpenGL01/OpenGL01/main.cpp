@@ -61,11 +61,19 @@ static void RenderSenceCB() {
 	World.mat[3][0] = 0.0f; World.mat[3][1] = 0.0f; World.mat[3][2] = 0.0f; World.mat[3][3] = 1.0f;
 
 	Pipeline p;
-	p.Scale(sinf(Scale * 0.1f), sinf(Scale * 0.1f), sinf(Scale * 0.1f));
-	p.Rotate(0.0f, 0.0f,0.0f);
-	//p.WorldPos(sinf(Scale),0.0f,0.0f);
 
-	Scale = Scale + 0.1f;
+	//M
+	p.Rotate(0.0f, Scale,0.0f);
+	p.WorldPos(0.0f,0.0f,-2.0f);
+
+	//V
+	Vector3f CameraPos(0,-2,0);
+	Vector3f CameraTarget(0,0,1);
+	Vector3f CameraUp(0, 1, 0);	p.setCamera(CameraPos, CameraTarget,CameraUp);
+
+	//P
+	p.SetPerspectivePro(30,800,600,1.0f,100.0f);
+
 
 	glUniformMatrix4fv(gWorldLocation, 1,GL_TRUE, (const float*)p.getTrans());
 
@@ -89,10 +97,10 @@ static void RenderSenceCB() {
 
 static void KeyboardFunc( unsigned char Key,int x,int y) {
 	if (Key == 'a') {
-		Scale += 10.0 / 360;
+		Scale += 10.0;
 	}
 	else if (Key == 's') {
-		Scale -= 10.0 / 360;
+		Scale -= 10.0;
 	}
 }
 
@@ -201,6 +209,13 @@ int main(int argc, char** argv) {
 	intiGlutCallBack();
 
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+
+	glFrontFace(GL_CW);
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+
+	glEnable(GL_POINT_SMOOTH);
+	glEnable(GL_LINE_SMOOTH);
 
 	glEnable(GL_DEPTH_TEST);
 

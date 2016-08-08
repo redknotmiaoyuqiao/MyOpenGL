@@ -10,6 +10,6 @@ uniform mat4 gWorld;
 out vec4 OutColor;
 
 void main(){
-	gl_Position = gWorld * vec4(Position * 0.3,1.0);
+	gl_Position = gWorld * vec4(Position,1.0);
 	OutColor = vec4(Color,1.0);
 }
