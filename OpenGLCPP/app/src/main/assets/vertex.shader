@@ -1,11 +1,14 @@
-attribute vec3 Postion;
+#version 300 es
 
-uniform float gScale;
+layout(location=0) in vec3 Position;
+layout(location=1) in vec3 Color;
 
-varying vec4 vColor;
+uniform mat4 gScale;
 
+out vec4 outColor;
 
-void main(){
-    gl_Position = vec4(Postion.x * gScale,Postion.y * gScale,Postion.z,1.0);
-    vColor = vec4(Postion.x * gScale,Postion.y * gScale,Postion.z * gScale,1.0);
+void main()
+{
+    gl_Position = gScale * vec4(Position * 0.5,1.0);
+    outColor = vec4(Color,1.0);
 }

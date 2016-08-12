@@ -1,5 +1,5 @@
 #include <EGL/egl.h>
-#include <GLES2/gl2.h>
+#include <GLES3/gl3.h>
 
 #include <string>
 
@@ -12,6 +12,8 @@
 
 #include "MYGL/Vector3f.h"
 #include "MYGL/ShaderManager.h"
+#include "MYGL/Matrix4f.h"
+#include "MYGL/Pipeline.h"
 
 #include "FILE/ReadFile.h"
 
@@ -20,26 +22,63 @@
 using namespace std;
 
 GLuint VBO;//定点缓冲区对象
+GLuint IBO;
+
+void CreateIndexBuffer()
+{
+    unsigned int Indices[] =
+    {
+        0,3,1,
+        1,3,2,
+        2,3,0,
+        0,1,2
+    };
+
+    glGenBuffers(1,&IBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,IBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(Indices),Indices,GL_STATIC_DRAW);
+}
 
 void CreateVertexBuffer()
 {
-    Vector3f vectices[3];
-    vectices[0] = Vector3f(-1.0f,-1.0f,0.0f);
-    vectices[1] = Vector3f(1.0f,-1.0f,0.0f);
-    vectices[2] = Vector3f(0.0f,1.0f,0.0f);
+    Vector3f Vertices[8];
+    Vertices[0] = Vector3f(-1.0f,-1.0f,0.0f);
+    Vertices[1] = Vector3f(1.0f,0.0f,0.0f);
+
+    Vertices[2] = Vector3f(0.0f,-1.0f,1.0f);
+    Vertices[3] = Vector3f(0.0f,1.0f,0.0f);
+
+    Vertices[4] = Vector3f(1.0f,-1.0f,0.0f);
+    Vertices[5] = Vector3f(0.0f,0.0f,1.0f);
+
+    Vertices[6] = Vector3f(0.0f,1.0f,0.0f);
+    Vertices[7] = Vector3f(1.0f,1.0f,1.0f);
 
 
     glGenBuffers(1,&VBO);
     glBindBuffer(GL_ARRAY_BUFFER,VBO);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(vectices),vectices,GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(Vertices),Vertices,GL_STATIC_DRAW);
 }
 
 GLuint UniformLocation;
 
+int screen_height;
+int screen_width;
+
 JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_initialize
   (JNIEnv * env, jclass thiz, jint width, jint height, jobject assetManager)
   {
+    screen_height = height;
+    screen_width = width;
+
     glClearColor(1.0f,1.0f,1.0f,1.0f);
+
+    glFrontFace(GL_CCW);
+    glCullFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
+    glDisable(GL_CULL_FACE);
+
+    glEnable(GL_DEPTH_TEST);
 
     AAssetManager* g_pAssetManager = AAssetManager_fromJava(env, assetManager);
     ReadFile read = ReadFile(g_pAssetManager);
@@ -53,23 +92,38 @@ JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_initialize
     shader.CompileShaders();
 
     CreateVertexBuffer();
+    CreateIndexBuffer();
   }
 
 JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_drawFrame
   (JNIEnv * env, jclass thiz)
   {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     static float scale = 0.0f;
     scale += 0.02f;
-    glUniform1f(UniformLocation,sinf(scale));
+
+    Pipeline p;
+    //p.Scale(sinf(scale * 0.1f),sinf(scale * 0.1f),sinf(scale * 0.1f));
+    p.Rotate(0.0f,scale * 90,0.0f);
+    p.WorldPos(0.0f,0.0f,-5.0f);
+
+    p.SetPerspectivePro(30,screen_width,screen_height,1.0f,1000.0f);
+
+    glUniformMatrix4fv(UniformLocation,1,GL_TRUE,(const float *)p.GetTrans());
 
     glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER,VBO);
-    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3*4,0);
-    glDrawArrays(GL_TRIANGLES,0,3);
+    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,6*4,0);
+    glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,6*4,(GLvoid*)12);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,IBO);
+
+    glDrawElements(GL_TRIANGLES,12,GL_UNSIGNED_INT,0);
 
     glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
   }
 
