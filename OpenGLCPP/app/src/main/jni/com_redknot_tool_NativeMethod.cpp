@@ -1,69 +1,75 @@
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
 
-#include <string.h>
+#include <string>
+
+#include <android/asset_manager.h>
+#include <android/asset_manager_jni.h>
+
+#include <math.h>
 
 #include "LOG/logger.h"
+
+#include "MYGL/Vector3f.h"
+#include "MYGL/ShaderManager.h"
+
+#include "FILE/ReadFile.h"
+
 #include "com_redknot_tool_NativeMethod.h"
 
 using namespace std;
 
-void AddShader(GLuint ShadlerProgram, const char* shaderText,GLenum shaderType)
+GLuint VBO;//定点缓冲区对象
+
+void CreateVertexBuffer()
 {
-    GLuint ShaderObj = glCreateShader(shaderType);
-    if(ShaderObj == 0){
-        LOG_ERROR("ShaderObj Error");
-    }
+    Vector3f vectices[3];
+    vectices[0] = Vector3f(-1.0f,-1.0f,0.0f);
+    vectices[1] = Vector3f(1.0f,-1.0f,0.0f);
+    vectices[2] = Vector3f(0.0f,1.0f,0.0f);
 
-    const GLchar* p[1];
-    p[0] = shaderText;
 
-    GLint L[1];
-    L[0] = strlen(shaderText);
-
-    glShaderSource(ShaderObj,1,p,L);
-
-    glCompileShader(ShaderObj);
-
-    GLint success;
-    GLchar infoLog[1024];
-    glGetShaderiv(ShaderObj,GL_COMPILE_STATUS,&success);
-    if(!success){
-        glGetShaderInfoLog(ShaderObj,1024,NULL,infoLog);
-        LOG_ERROR("Error compiling shader type %d,'%s'\n",shaderType,infoLog);
-    }
-
-    glAttachShader(ShadlerProgram,ShaderObj);
+    glGenBuffers(1,&VBO);
+    glBindBuffer(GL_ARRAY_BUFFER,VBO);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(vectices),vectices,GL_STATIC_DRAW);
 }
 
-void CompileShaders()
-{
-    GLuint ShadlerProgram = glCreateProgram();
-    if(ShadlerProgram == 0){
-        LOG_ERROR("ShadlerProgram Error");
-        return;
-    }
-
-    char * vertex_shader = "void main(){}";
-    char * fragment_shader = "void main(){}";
-
-    AddShader(ShadlerProgram,vertex_shader,GL_VERTEX_SHADER);
-    AddShader(ShadlerProgram,fragment_shader,GL_FRAGMENT_SHADER);
-
-    glLinkProgram(ShadlerProgram);
-    glUseProgram(ShadlerProgram);
-}
+GLuint UniformLocation;
 
 JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_initialize
-  (JNIEnv * env, jclass thiz, jint width, jint height)
+  (JNIEnv * env, jclass thiz, jint width, jint height, jobject assetManager)
   {
     glClearColor(1.0f,1.0f,1.0f,1.0f);
 
-    CompileShaders();
+    AAssetManager* g_pAssetManager = AAssetManager_fromJava(env, assetManager);
+    ReadFile read = ReadFile(g_pAssetManager);
+
+    char * vertex_shader = read.readShaderSrcFile("vertex.shader");
+    char * fragment_shader = read.readShaderSrcFile("fragment.shader");
+
+    ShaderManager shader = ShaderManager(vertex_shader,fragment_shader);
+
+    shader.setUniformLocation(&UniformLocation);
+    shader.CompileShaders();
+
+    CreateVertexBuffer();
   }
 
 JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_drawFrame
   (JNIEnv * env, jclass thiz)
   {
     glClear(GL_COLOR_BUFFER_BIT);
+
+    static float scale = 0.0f;
+    scale += 0.02f;
+    glUniform1f(UniformLocation,sinf(scale));
+
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER,VBO);
+    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3*4,0);
+    glDrawArrays(GL_TRIANGLES,0,3);
+
+    glDisableVertexAttribArray(0);
   }
+

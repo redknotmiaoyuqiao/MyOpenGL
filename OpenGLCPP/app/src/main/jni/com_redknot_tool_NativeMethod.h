@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (II)V
  */
 JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_initialize
-  (JNIEnv *, jclass, jint, jint);
+  (JNIEnv *, jclass, jint, jint, jobject);
 
 /*
  * Class:     com_redknot_tool_NativeMethod
