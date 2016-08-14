@@ -35,3 +35,21 @@ float PtData[][3] = {
     {8,11,9},
     {9,11,10}
   };
+
+
+  LOCAL_SRC_FILES += PNGLIB/png.c
+  LOCAL_SRC_FILES += PNGLIB/pngerror.c
+  LOCAL_SRC_FILES += PNGLIB/pngget.c
+  LOCAL_SRC_FILES += PNGLIB/pngmem.c
+  LOCAL_SRC_FILES += PNGLIB/pngpread.c
+  LOCAL_SRC_FILES += PNGLIB/pngread.c
+  LOCAL_SRC_FILES += PNGLIB/pngrio.c
+  LOCAL_SRC_FILES += PNGLIB/pngrtran.c
+  LOCAL_SRC_FILES += PNGLIB/pngrutil.c
+  LOCAL_SRC_FILES += PNGLIB/pngset.c
+  LOCAL_SRC_FILES += PNGLIB/pngtest.c
+  LOCAL_SRC_FILES += PNGLIB/pngtrans.c
+  LOCAL_SRC_FILES += PNGLIB/pngwio.c
+  LOCAL_SRC_FILES += PNGLIB/pngwrite.c
+  LOCAL_SRC_FILES += PNGLIB/pngwtran.c
+  LOCAL_SRC_FILES += PNGLIB/pngwutil.c

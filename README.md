@@ -1,6 +1,6 @@
 #My OpenGL Playground
 
-#正在找工作啊，你们有工作给我吗～～～～redknot@126.com 有的话联系我啊～～～～
+##正在找工作啊，你们有工作给我吗～～～～redknot@126.com 有的话联系我啊～～～～
 
 ![one](https://github.com/redknotmiaoyuqiao/MyOpenGL/blob/master/img/one.gif?raw=true =700x)
 

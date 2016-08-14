@@ -25,6 +25,7 @@ private:
     void InitRotateTrans(Matrix4f& mat);
     void InitTranslationTrans(Matrix4f& mat);
     void InitPersProjTrans(Matrix4f& mat);
+    void InitCameraTransfrom(Matrix4f& CameraTrans,Matrix4f& CameraRot);
 
     struct{
         float Fov;
@@ -34,6 +35,12 @@ private:
         float zFar;
     }m_persProj;
 
+    struct{
+        Vector3f Pos;
+        Vector3f Target;
+        Vector3f Up;
+    }m_camera;
+
 public:
     Pipeline();
     void Scale(float _x,float _y,float _z);
@@ -42,6 +49,8 @@ public:
     const Matrix4f* GetTrans();
 
     void SetPerspectivePro(float _Fov, float _Width, float _Height, float _zNear, float _zFar);
+
+    void SetCamera(const Vector3f& CameraPos,const Vector3f& CameraTarget, const Vector3f& CameraUp);
 };
 
 

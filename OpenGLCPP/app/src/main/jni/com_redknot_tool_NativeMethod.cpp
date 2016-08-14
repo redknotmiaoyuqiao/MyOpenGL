@@ -1,6 +1,8 @@
 #include <EGL/egl.h>
 #include <GLES3/gl3.h>
 
+#include <png.h>
+
 #include <string>
 
 #include <android/asset_manager.h>
@@ -10,12 +12,14 @@
 
 #include "LOG/logger.h"
 
+#include "MYGL/Texture.h"
 #include "MYGL/Vector3f.h"
 #include "MYGL/ShaderManager.h"
 #include "MYGL/Matrix4f.h"
 #include "MYGL/Pipeline.h"
 
 #include "FILE/ReadFile.h"
+#include "FILE/ReadPNG.h"
 
 #include "com_redknot_tool_NativeMethod.h"
 
@@ -65,11 +69,16 @@ GLuint UniformLocation;
 int screen_height;
 int screen_width;
 
+Texture * pTexture = NULL;
+
 JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_initialize
   (JNIEnv * env, jclass thiz, jint width, jint height, jobject assetManager)
   {
+
     screen_height = height;
     screen_width = width;
+
+    //pTexture = new Texture(GL_TEXTURE_2D,"");
 
     glClearColor(1.0f,1.0f,1.0f,1.0f);
 
@@ -81,6 +90,14 @@ JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_initialize
     glEnable(GL_DEPTH_TEST);
 
     AAssetManager* g_pAssetManager = AAssetManager_fromJava(env, assetManager);
+
+    ReadPNG r;
+    string png_src = "texture.png";
+    ImageData* img_res = r.FromAssetPNGFile(g_pAssetManager,png_src);
+
+    LOG_ERROR("width: %d",img_res->img_width);
+    LOG_ERROR("height: %d",img_res->img_height);
+
     ReadFile read = ReadFile(g_pAssetManager);
 
     char * vertex_shader = read.readShaderSrcFile("vertex.shader");
@@ -105,8 +122,13 @@ JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_drawFrame
 
     Pipeline p;
     //p.Scale(sinf(scale * 0.1f),sinf(scale * 0.1f),sinf(scale * 0.1f));
-    p.Rotate(0.0f,scale * 90,0.0f);
+    p.Rotate(0.0f,scale * 90.0f,0.0f);
     p.WorldPos(0.0f,0.0f,-5.0f);
+
+    Vector3f CameraPos(0.0f,0.0f,-10.0f);
+    Vector3f CameraTarget(0.0f,0.0f,-1.0f);
+    Vector3f CameraUp(0.0f,1.0f,0.0f);
+    p.SetCamera(CameraPos,CameraTarget,CameraUp);
 
     p.SetPerspectivePro(30,screen_width,screen_height,1.0f,1000.0f);
 

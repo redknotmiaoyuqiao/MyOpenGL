@@ -16,6 +16,9 @@ public:
 
     Vector3f();
     Vector3f(float _x,float _y,float _z);
+
+    Vector3f Cross(Vector3f& v);
+    Vector3f& Normalize();
 };
 
 
