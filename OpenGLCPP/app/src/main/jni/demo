@@ -53,3 +53,5 @@ float PtData[][3] = {
   LOCAL_SRC_FILES += PNGLIB/pngwrite.c
   LOCAL_SRC_FILES += PNGLIB/pngwtran.c
   LOCAL_SRC_FILES += PNGLIB/pngwutil.c
+
+  armeabi armeabi-v7a x86 mips arm64-v8a x86_64 mips64
