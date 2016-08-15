@@ -10,7 +10,6 @@
 #include "MYGL/Vector3f.h"
 #include "MYGL/Matrix4f.h"
 
-#define M_PI 3.14159265
 #define ToRadian(x) (float) (((x) * M_PI / 180.0f))
 
 class Pipeline {
