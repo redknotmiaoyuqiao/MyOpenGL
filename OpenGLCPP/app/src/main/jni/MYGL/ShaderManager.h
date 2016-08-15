@@ -17,8 +17,10 @@ private:
     char * fragment_shader;
 
     GLuint * UniformLocation;
+    GLuint * gSamplerLocation;
 public:
     ShaderManager(char * _vertex_shader,char * _fragment_shader);
+    void setSamplerLocation(GLuint * _gSamplerLocation);
     void setUniformLocation(GLuint * _UniformLocation);
     void CompileShaders();
 };

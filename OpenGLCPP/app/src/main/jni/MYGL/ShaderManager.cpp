@@ -52,6 +52,7 @@ void ShaderManager::CompileShaders()
     glLinkProgram(ShadlerProgram);
 
     *UniformLocation = glGetUniformLocation(ShadlerProgram,"gScale");
+    *gSamplerLocation = glGetUniformLocation(ShadlerProgram,"gSampler");
 
     glUseProgram(ShadlerProgram);
 }
@@ -59,4 +60,9 @@ void ShaderManager::CompileShaders()
 void ShaderManager::setUniformLocation(GLuint * _UniformLocation)
 {
     UniformLocation = _UniformLocation;
+}
+
+void ShaderManager::setSamplerLocation(GLuint * _gSamplerLocation)
+{
+    gSamplerLocation = _gSamplerLocation;
 }

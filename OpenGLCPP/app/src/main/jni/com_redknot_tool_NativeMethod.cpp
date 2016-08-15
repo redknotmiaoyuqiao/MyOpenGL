@@ -47,16 +47,16 @@ void CreateVertexBuffer()
 {
     Vector3f Vertices[8];
     Vertices[0] = Vector3f(-1.0f,-1.0f,0.0f);
-    Vertices[1] = Vector3f(1.0f,0.0f,0.0f);
+    Vertices[1] = Vector3f(0.0f,0.0f,0.0f);
 
     Vertices[2] = Vector3f(0.0f,-1.0f,1.0f);
-    Vertices[3] = Vector3f(0.0f,1.0f,0.0f);
+    Vertices[3] = Vector3f(0.5f,0.0f,0.0f);
 
     Vertices[4] = Vector3f(1.0f,-1.0f,0.0f);
-    Vertices[5] = Vector3f(0.0f,0.0f,1.0f);
+    Vertices[5] = Vector3f(0.0f,1.0f,0.0f);
 
     Vertices[6] = Vector3f(0.0f,1.0f,0.0f);
-    Vertices[7] = Vector3f(1.0f,1.0f,1.0f);
+    Vertices[7] = Vector3f(1.0f,1.0f,0.0f);
 
 
     glGenBuffers(1,&VBO);
@@ -65,6 +65,7 @@ void CreateVertexBuffer()
 }
 
 GLuint UniformLocation;
+GLuint gSamplerLocation;
 
 int screen_height;
 int screen_width;
@@ -78,8 +79,6 @@ JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_initialize
     screen_height = height;
     screen_width = width;
 
-    //pTexture = new Texture(GL_TEXTURE_2D,"");
-
     glClearColor(1.0f,1.0f,1.0f,1.0f);
 
     glFrontFace(GL_CCW);
@@ -91,12 +90,8 @@ JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_initialize
 
     AAssetManager* g_pAssetManager = AAssetManager_fromJava(env, assetManager);
 
-    ReadPNG r;
-    string png_src = "texture.png";
-    ImageData* img_res = r.FromAssetPNGFile(g_pAssetManager,png_src);
-
-    LOG_ERROR("width: %d",img_res->img_width);
-    LOG_ERROR("height: %d",img_res->img_height);
+    pTexture = new Texture(g_pAssetManager,GL_TEXTURE_2D,"test.png");
+    pTexture->Load();
 
     ReadFile read = ReadFile(g_pAssetManager);
 
@@ -106,10 +101,13 @@ JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_initialize
     ShaderManager shader = ShaderManager(vertex_shader,fragment_shader);
 
     shader.setUniformLocation(&UniformLocation);
+    shader.setSamplerLocation(&gSamplerLocation);
     shader.CompileShaders();
 
     CreateVertexBuffer();
     CreateIndexBuffer();
+
+    glUniform1i(gSamplerLocation,0);
   }
 
 JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_drawFrame
@@ -133,6 +131,8 @@ JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_drawFrame
     p.SetPerspectivePro(30,screen_width,screen_height,1.0f,1000.0f);
 
     glUniformMatrix4fv(UniformLocation,1,GL_TRUE,(const float *)p.GetTrans());
+
+    pTexture->Bind(GL_TEXTURE0);
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
