@@ -1,2 +1,3 @@
 /build
-/src/main/obj
+/app/src/main/obj
+/app/src/main/libs
