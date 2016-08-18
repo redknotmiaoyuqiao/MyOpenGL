@@ -10,8 +10,10 @@
  /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/FILE/../LOG/logger.h \
  /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/FILE/ImageData.h \
  /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/Vector3f.h \
- /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/ShaderManager.h \
+ /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/ShaderProgram.h \
+ /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/../FILE/ReadFile.h \
  /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/LOG/logger.h \
+ /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/../LOG/logger.h \
  /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/Matrix4f.h \
  /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/Pipeline.h \
  /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/Vector3f.h \
@@ -40,9 +42,13 @@
 
 /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/Vector3f.h:
 
-/Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/ShaderManager.h:
+/Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/ShaderProgram.h:
+
+/Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/../FILE/ReadFile.h:
 
 /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/LOG/logger.h:
+
+/Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/../LOG/logger.h:
 
 /Users/redknot/MyOpenGL/OpenGLCPP/app/src/main/jni/MYGL/Matrix4f.h:
 

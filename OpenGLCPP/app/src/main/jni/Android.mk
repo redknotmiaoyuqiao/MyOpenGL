@@ -11,6 +11,7 @@ LOCAL_LDLIBS := -llog -landroid -lEGL -lGLESv3 -lz
 LOCAL_CFLAGS := -std=c++11
 
 LOCAL_SRC_FILES += com_redknot_tool_NativeMethod.cpp
+LOCAL_SRC_FILES += MYGL/ShaderProgram.cpp
 LOCAL_SRC_FILES += MYGL/ShaderManager.cpp
 LOCAL_SRC_FILES += MYGL/Vector3f.cpp
 LOCAL_SRC_FILES += MYGL/Matrix4f.cpp

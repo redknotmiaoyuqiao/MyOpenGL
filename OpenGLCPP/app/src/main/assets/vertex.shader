@@ -9,6 +9,6 @@ out vec4 TexCoord0;
 
 void main()
 {
-    gl_Position = gScale * vec4(Position * 0.5,1.0);
+    gl_Position = gScale * vec4(Position,1.0);
     TexCoord0 = vec4(TexCoord,1.0);
 }

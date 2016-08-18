@@ -14,7 +14,7 @@
 
 #include "MYGL/Texture.h"
 #include "MYGL/Vector3f.h"
-#include "MYGL/ShaderManager.h"
+#include "MYGL/ShaderProgram.h"
 #include "MYGL/Matrix4f.h"
 #include "MYGL/Pipeline.h"
 
@@ -90,20 +90,25 @@ JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_initialize
 
     AAssetManager* g_pAssetManager = AAssetManager_fromJava(env, assetManager);
 
+    /* 初始化贴图 */
     pTexture = new Texture(g_pAssetManager,GL_TEXTURE_2D,"test.png");
     pTexture->Load();
 
-    ReadFile read = ReadFile(g_pAssetManager);
+    /* 初始化Shader */
+    ShaderProgram shaderM = ShaderProgram(g_pAssetManager);
+    shaderM.Init();
 
-    char * vertex_shader = read.readShaderSrcFile("vertex.shader");
-    char * fragment_shader = read.readShaderSrcFile("fragment.shader");
+    shaderM.AddShadler(GL_VERTEX_SHADER,"vertex.shader");
+    shaderM.AddShadler(GL_FRAGMENT_SHADER,"fragment.shader");
 
-    ShaderManager shader = ShaderManager(vertex_shader,fragment_shader);
+    shaderM.LinkProgram();
 
-    shader.setUniformLocation(&UniformLocation);
-    shader.setSamplerLocation(&gSamplerLocation);
-    shader.CompileShaders();
+    UniformLocation = shaderM.GetUniformLocation("gScale");
+    gSamplerLocation = shaderM.GetUniformLocation("gSampler");
 
+    shaderM.Begin();
+
+    /*初始化顶点信息*/
     CreateVertexBuffer();
     CreateIndexBuffer();
 
@@ -121,7 +126,7 @@ JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_drawFrame
     Pipeline p;
     //p.Scale(sinf(scale * 0.1f),sinf(scale * 0.1f),sinf(scale * 0.1f));
     p.Rotate(0.0f,scale * 90.0f,0.0f);
-    p.WorldPos(0.0f,0.0f,-5.0f);
+    //p.WorldPos(0.0f,0.0f,-5.0f);
 
     Vector3f CameraPos(0.0f,0.0f,-10.0f);
     Vector3f CameraTarget(0.0f,0.0f,-1.0f);
