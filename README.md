@@ -30,3 +30,5 @@
 ![one](https://github.com/redknotmiaoyuqiao/MyOpenGL/blob/master/img/ten.gif?raw=true)
 
 调整环境光的颜色，让物体反射指定的光
+
+法线计算
