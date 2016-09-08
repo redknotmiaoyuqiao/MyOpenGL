@@ -79,7 +79,7 @@ JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_initialize
     screen_height = height;
     screen_width = width;
 
-    glClearColor(1.0f,1.0f,1.0f,1.0f);
+    glClearColor(0.0f,0.0f,0.0f,1.0f);
 
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
@@ -148,7 +148,7 @@ JNIEXPORT void JNICALL Java_com_redknot_tool_NativeMethod_drawFrame
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,IBO);
 
-    glDrawElements(GL_TRIANGLES,12,GL_UNSIGNED_INT,0);
+    glDrawElements(GL_LINE_LOOP,12,GL_UNSIGNED_INT,0);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
