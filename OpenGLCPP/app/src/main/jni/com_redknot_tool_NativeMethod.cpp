@@ -35,7 +35,7 @@ void CreateIndexBuffer()
         0,3,1,
         1,3,2,
         2,3,0,
-        0,1,2
+        0,1,2,3,4,5
     };
 
     glGenBuffers(1,&IBO);

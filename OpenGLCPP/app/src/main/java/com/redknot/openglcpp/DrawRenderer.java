@@ -28,7 +28,7 @@ public class DrawRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 gl10, int width, int height) {
-        mgr =context.getResources().getAssets();
+        mgr = context.getResources().getAssets();
         NativeMethod.initialize(width, height,mgr);
     }
 
