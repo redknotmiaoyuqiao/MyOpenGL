@@ -32,8 +32,3 @@
 调整环境光的颜色，让物体反射指定的光
 
 法线计算
-
-
-I did nothing
-
-I did nothing
